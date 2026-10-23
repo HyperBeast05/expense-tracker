@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const isProduction = process.env.NODE_ENV === "production";
+const isAvien = process.env.DB_HOST?.includes("aivencloud.com");
+
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -15,6 +18,12 @@ const pool = mysql.createPool({
   queueLimit: 0,
 
   dateStrings: true,
+
+  ...(isAvien && {
+    ssl: {
+      rejectUnauthorized: true,
+    },
+  }),
 });
 
 export default pool;
