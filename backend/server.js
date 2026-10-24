@@ -18,8 +18,10 @@ const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:5173";
 //CORS
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: [allowedOrigin, "http://localhost:5173"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
@@ -37,7 +39,9 @@ app.use((req, res, next) => {
 
   const origin = req.get("Origin");
 
-  if (!origin || origin !== allowedOrigin) {
+  const allowedOrigins = [allowedOrigin, "http://localhost:5173"];
+
+  if (!origin || !allowedOrigins.includes(origin)) {
     return res.status(403).json({
       success: false,
       message: "Request origin is not allowed",
