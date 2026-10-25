@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://expense-tracker-api-kb3q.onrender.com/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
